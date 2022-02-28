@@ -1,61 +1,38 @@
-.login{
-    background: #000;
-    position: fixed;
-    top: 0;
-    left: 0;
-    right: 0;
-    bottom: 0;
-    width: 100%;
-    height: 100%;
-    z-index: 2147483646;
+.container {
+    background-color: #000;
+    width: 100%; 
+    overflow-y: hidden;
 }
-.vid-wrapper {
-    position: relative;
-    width: 100vw;
+.scroll-row{
     height: 100vh;
-    z-index: 1;
-    overflow: hidden;
+    background-color: black;
+    color: white;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content:  center;
+    align-content: center;
 }
-video {
-    position: absolute;
-right: 0;
-bottom: 0;
-min-width: 100vw;
-min-height: 100vh;
-width: auto;
-height: auto;
-z-index: -100;
-object-fit: cover;
-max-width: 100%;
+.title {
+    color: white;
 }
-
-.login-prompt{
-    position: absolute;
-left: 0;
-width: calc(100% - 40px);
-margin: 0 20px;
-z-index: 2;
-top: calc(100% - 50%);
-text-align: center;
+footer{
+    position:fixed;
+    bottom:0px;
+    background-color:pink;
+    width:100%;
 }
-.name-input{
-    background: transparent;
-    padding: 10px 50px;
-    border: 2px solid #FFF;
-    color: #FFF;
-    font-family: "futura book legacy","FuturaPT-Book",Futura,"Trebuchet MS",Arial,sans-serif;
-    font-size: 12px;
-    letter-spacing: 2px;
-    text-transform: uppercase;
-    text-align: center;
-}
-.login-btn{
-    background: transparent;
-    padding: 10px 10px;
-    border: 2px solid #FFF;
-    color: #FFF;
-    width: 120px;
-    margin-top: 10px;
+.refresh-btn{
+    // position: absolute;
+    // right: 15px;
+    height: 35px;
+    padding-left: 10px;
+    padding-right: 10px;
+    border-radius: 3px;
+    border: solid #c79f27 1px;
+    background-color: #c79f27;
+    color: black;
     cursor: pointer;
-    border-radius: 20px;
+    font-size:1rem;
+    font-weight: 700;
 }
