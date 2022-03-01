@@ -42,7 +42,7 @@ export class MainComponent implements OnInit {
         const params = {}
         this.dataService.get(url, params).subscribe( (d1: any) => {
             this.dataService.oscarOptions = d1;
-            this.dataService.oscarCats = [...new Set( d1.map( (item: any) => item['Cat']))].sort().slice(0, 5);
+            this.dataService.oscarCats = [...new Set( d1.map( (item: any) => item['Cat']))].sort();
             const url = `${this.dataService.baseUrl}api/getCurrentUserSelections`;
             const params = {'user': this.dataService.user};
             this.dataService.get(url, params).subscribe( (d2: any) => {

@@ -63,19 +63,21 @@ footer{
     width: auto;
     background-color: white;
     overflow: hidden;
+    width: 90%;
+    margin-left: 5%;
     
     th {
         background-color: black;
         color: white;
         font-weight: normal;
-        padding: 5px 20px;
+        padding: 10px 10px;
         text-align: center;
-        font-size: 150%;
+        font-size: 125%;
     }
     td {
       background-color: black;
       color: white;
-      padding: 1px 20px;
+      padding: 0px 0px;
       text-align: center;
     }
   }
@@ -90,8 +92,8 @@ footer{
     right: 0;
     bottom: 0;
     left: 0;
-    height: 40px;
-    width: 40px;
+    height: 36px;
+    width: 36px;
     transition: all 0.15s ease-out 0s;
     background: #cbd1d8;
     border: none;
@@ -110,8 +112,8 @@ footer{
     background: #c79f27;
   }
   .option-input:checked::before {
-    width: 40px;
-    height: 40px;
+    width: 36px;
+    height: 36px;
     display:flex;
     // content: '\f00c';
     font-size: 25px;
