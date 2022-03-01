@@ -13,7 +13,7 @@
 
             <ng-container *ngFor="let cat of dataService.oscarCats; index as i">
                 <div class="picks" *ngIf="currentIndex == i">
-                    <h3 class="title">{{cat}} <span>({{i+1}}/{{dataService.oscarCats.length}})</span></h3>
+                    <h2 class="title">{{cat}} <span style="font-size: 16px;">({{i+1}}/{{dataService.oscarCats.length}})</span></h2>
                     <div>
                         <table class="oscar-table">
                             <thead>
@@ -72,8 +72,8 @@
         <h1 class="title">Our Oscar Winners</h1>
     </div>
 
-    <footer>
+    <!-- <footer>
         <button class="refresh-btn" style="width: 100%;">Refresh Data</button>
-    </footer>
+    </footer> -->
 
 </div>

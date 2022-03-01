@@ -26,7 +26,7 @@ export class MainComponent implements OnInit {
             section : ".scroll-row",
             interstitialSection : "",
             easing: "easeOutExpo",
-            scrollSpeed: 600,
+            scrollSpeed: 1000,
             scrollbars: true,
             overflowScroll: true,
             updateHash: false,
