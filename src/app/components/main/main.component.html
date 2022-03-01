@@ -1,8 +1,63 @@
-
 <div class="container">
-    
+
     <div class="scroll-row">
-        <h1 class="title">Make Your Oscar Picks</h1>
+
+        <ng-container *ngIf="selectionEnabled==false">
+            <h1 class="title">Make Your Oscar Picks</h1>
+            <button class="index-btn" (click)="selectionEnabled = true">Lets Go!</button>
+
+        </ng-container>
+
+
+        <div *ngIf="selectionEnabled==true" class="selection-container">
+
+            <ng-container *ngFor="let cat of dataService.oscarCats; index as i">
+                <div class="picks" *ngIf="currentIndex == i">
+                    <h1 class="title">{{cat}} <span>({{i+1}}/{{dataService.oscarCats.length}})</span></h1>
+                    <div>
+                        <table class="oscar-table">
+                            <thead>
+                                <tr>
+                                    <th>Name</th>
+                                    <th>Winner</th>
+                                    <th>Favorite</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <ng-container *ngFor="let row of dataService.oscarOptions;">
+                                    <tr *ngIf="row['Cat'] == cat">
+                                        <td>{{ row['Name'] }}</td>
+                                        <td>
+                                            <input type="radio" class="option-input radio"
+                                                value="{{ row['Name'] }}$$WIN$$" name="{{ row['Cat'] }}$$WIN$$"
+                                                [(ngModel)]='userSelectionsWinner[cat]' (ngModelChange)="radioChange()">
+                                        </td>
+                                        <td>
+                                            <input type="radio" class="option-input radio"
+                                                value="{{ row['Name'] }}$$FAV$$" name="{{ row['Cat'] }$$FAV$$"
+                                                [(ngModel)]='userSelectionsFavorite[cat]'
+                                                (ngModelChange)="radioChange()">
+                                        </td>
+                                    </tr>
+
+                                </ng-container>
+                            </tbody>
+                        </table>
+                    </div>
+                    <div style="width: 100%;display: flex;flex-direction: row;justify-content: space-between;">
+                        <button [disabled]="!(currentIndex>=1)" class="index-btn"
+                            (click)="currentIndex = currentIndex - 1">Previous</button>
+                        <button
+                            *ngIf="((userSelectionsFavorite | objectLength) == dataService.oscarCats.length) && ((userSelectionsWinner | objectLength) == dataService.oscarCats.length)"
+                            style="text-align: center;" class="index-btn" (click)="submitSelections()">Submit</button>
+                        <button [disabled]="!(currentIndex<dataService.oscarCats.length-1)" class="index-btn"
+                            (click)="currentIndex = currentIndex + 1">Next</button>
+                    </div>
+                </div>
+            </ng-container>
+
+        </div>
+
     </div>
 
     <div class="scroll-row">

@@ -15,19 +15,25 @@ import { LoginComponent } from './components/login/login.component'
 // Services
 import { DataService } from './services/data.service'
 
+// Pipes
+import { ObjectLengthPipe } from './components/pipe/object-length-pipe';
+
 // 3rd Party
+import { FontAwesomeModule } from '@fortawesome/angular-fontawesome'
 
 @NgModule({
   declarations: [
     AppComponent,
     MainComponent,
     LoginComponent,
+    ObjectLengthPipe,
   ],
   imports: [
     BrowserModule,
     AppRoutingModule,
     FormsModule,
     HttpClientModule,
+    FontAwesomeModule,
   ],
   bootstrap: [AppComponent],
   providers: [DataService],
