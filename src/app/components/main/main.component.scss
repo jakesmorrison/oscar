@@ -86,7 +86,7 @@ footer{
       color: white;
       padding: 0px 4px;
       text-align: center;
-      font-size: 13px;
+      font-size: 12px;
     }
   }
 
@@ -100,8 +100,8 @@ footer{
     right: 0;
     bottom: 0;
     left: 0;
-    height: 36px;
-    width: 36px;
+    height: 30px;
+    width: 32px;
     transition: all 0.15s ease-out 0s;
     background: #cbd1d8;
     border: none;
@@ -120,8 +120,8 @@ footer{
     background: #c79f27;
   }
   .option-input:checked::before {
-    width: 36px;
-    height: 36px;
+    width: 32px;
+    height: 30px;
     display:flex;
     // content: '\f00c';
     font-size: 25px;
