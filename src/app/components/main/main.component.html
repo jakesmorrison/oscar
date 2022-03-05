@@ -14,7 +14,7 @@
                     <ng-container *ngFor="let cat of dataService.oscarCats; index as i">
                         <div class="picks" *ngIf="currentIndex == i" style="overflow-y: hidden;">
                             <div class="title-div">
-                                <h3 class="title">{{cat}} <span
+                                <h3 class="title" style="white-space: nowrap;">{{cat}} <span
                                     style="font-size: 12px;">({{i+1}}/{{dataService.oscarCats.length}})</span></h3>
                             </div>
                           
