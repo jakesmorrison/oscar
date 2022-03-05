@@ -20,6 +20,7 @@ import { ObjectLengthPipe } from './components/pipe/object-length-pipe';
 
 // 3rd Party
 import { FontAwesomeModule } from '@fortawesome/angular-fontawesome'
+import { TabsModule } from 'ngx-bootstrap/tabs';
 
 @NgModule({
   declarations: [
@@ -34,6 +35,7 @@ import { FontAwesomeModule } from '@fortawesome/angular-fontawesome'
     FormsModule,
     HttpClientModule,
     FontAwesomeModule,
+    TabsModule.forRoot(),
   ],
   bootstrap: [AppComponent],
   providers: [DataService],

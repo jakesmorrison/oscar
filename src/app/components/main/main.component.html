@@ -1,6 +1,89 @@
-<div class="container">
+<div class="container" style="overflow-y: hidden;">
 
-    <div class="scroll-row">
+    <tabset type="pills" style="margin-top: 10px; overflow-y: hidden;" >
+        <tab heading="Selection" id="tab1" style="overflow-y: hidden;">
+
+            <div class="tab-cont" style="overflow-y: hidden;">
+                <div [ngStyle]="{'height.px': height | async}" class="heading-div" *ngIf="selectionEnabled==false" >
+                    <h1 class="title">Make Your Oscar Picks</h1>
+                    <button class="index-btn" (click)="selectionClick()">Lets Go!</button>
+                </div>
+    
+                <div *ngIf="selectionEnabled==true" class="selection-container" style="overflow-y: hidden;">
+    
+                    <ng-container *ngFor="let cat of dataService.oscarCats; index as i">
+                        <div class="picks" *ngIf="currentIndex == i" style="overflow-y: hidden;">
+                            <div class="title-div">
+                                <h3 class="title">{{cat}} <span
+                                    style="font-size: 12px;">({{i+1}}/{{dataService.oscarCats.length}})</span></h3>
+                            </div>
+                          
+                            <div class="scroll-div" [ngStyle]="{'height.px': height | async}">
+                                <table class="oscar-table">
+                                    <thead>
+                                        <tr>
+                                            <th>Name</th>
+                                            <th>Winner</th>
+                                            <th>Favorite</th>
+                                        </tr>
+                                    </thead>
+                                    <tbody>
+                                        <ng-container *ngFor="let row of dataService.oscarOptions;">
+                                            <tr *ngIf="row['Cat'] == cat">
+                                                <td>{{ row['Name'] }}</td>
+                                                <td>
+                                                    <input type="radio" class="option-input radio"
+                                                        value="{{ row['Name'] }}$$WIN$$" name="{{ row['Cat'] }}$$WIN$$"
+                                                        [(ngModel)]='userSelectionsWinner[cat]'
+                                                        (ngModelChange)="radioChange()">
+                                                </td>
+                                                <td>
+                                                    <input type="radio" class="option-input radio"
+                                                        value="{{ row['Name'] }}$$FAV$$" name="{{ row['Cat'] }$$FAV$$"
+                                                        [(ngModel)]='userSelectionsFavorite[cat]'
+                                                        (ngModelChange)="radioChange()">
+                                                </td>
+                                            </tr>
+    
+                                        </ng-container>
+                                    </tbody>
+                                </table>
+                            </div>
+                        </div>
+                    </ng-container>
+                </div>
+
+                <div *ngIf="selectionEnabled==true" class="button-div"
+                style="width: 100%; display: flex;flex-direction: row;justify-content: space-between; margin-top: 10px;">
+                <button style="margin-left: 10px;" [disabled]="!(currentIndex>=1)" class="index-btn"
+                    (click)="currentIndex = currentIndex - 1">Previous</button>
+                <button
+                    *ngIf="((userSelectionsFavorite | objectLength) == dataService.oscarCats.length) && ((userSelectionsWinner | objectLength) == dataService.oscarCats.length)"
+                    style="text-align: center;" class="index-btn"
+                    (click)="submitSelections()">Submit</button>
+                <button style="margin-right: 10px;"
+                    [disabled]="!(currentIndex<dataService.oscarCats.length-1)" class="index-btn"
+                    (click)="currentIndex = currentIndex + 1">Next</button>
+            </div>
+
+            </div>
+
+        </tab>
+        <tab heading="Picks">Basic content 1</tab>
+        <tab heading="Leaderboard">Basic content 2</tab>
+        <tab heading="Winners">Basic content 2</tab>
+
+
+        
+    </tabset>
+
+    <footer>
+        <button class="refresh-btn" style="width: 100%;">Refresh Data</button>
+    </footer>
+
+
+
+    <!-- <div class="scroll-row">
 
         <ng-container *ngIf="selectionEnabled==false">
             <h1 class="title">Make Your Oscar Picks</h1>
@@ -62,8 +145,6 @@
 
     <div class="scroll-row">
         <h1 class="title">Your Picks</h1>
-        <!-- <div style="height: 500px; overflow-y: hidden; width: 100%; z-index: 1000000;">
-        </div> -->
     </div>
 
     <div class="scroll-row">
@@ -72,7 +153,7 @@
 
     <div class="scroll-row">
         <h1 class="title">Our Oscar Winners</h1>
-    </div>
+    </div> -->
 
     <!-- <footer>
         <button class="refresh-btn" style="width: 100%;">Refresh Data</button>

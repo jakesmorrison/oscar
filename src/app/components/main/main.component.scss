@@ -2,6 +2,7 @@
     background-color: #000;
     width: 100%; 
     overflow-y: hidden;
+    padding: 0;
 }
 .scroll-row{
     min-height: 100vh;
@@ -18,9 +19,12 @@
 .title {
     color: white;
     margin-top: 0;
-    margin-bottom: 5px;
-    margin-top: 5px;
-    // font-size: 5.9vw;
+    margin-bottom: 0px;
+    margin-top: 0px;
+    text-align: center;
+    white-space: nowrap;
+    font-size: 5.5vw;
+    padding: 5px;
 }
 footer{
     position:fixed;
@@ -84,7 +88,7 @@ footer{
     td {
       background-color: black;
       color: white;
-      padding: 0px 4px;
+      padding: 3px 4px;
       text-align: center;
       font-size: 12px;
     }
@@ -165,4 +169,39 @@ footer{
   
   ::-webkit-scrollbar:vertical {
     width: 12px;
+}
+.heading-div{
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content:  center;
+  align-content: center;
+  overflow-y: auto;
+}
+.tab-cont{
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content:  center;
+  align-content: center;
+  overflow-y: auto;
+}
+::ng-deep .nav-pills {
+  padding: 20px;
+}
+::ng-deep .nav-link{
+  color: white;
+}
+::ng-deep .nav-pills .nav-link.active, .nav-pills .show > .nav-link{
+  color: #000;
+  background-color: #fff;
+}
+
+.scroll-div{
+  overflow-y: auto;
+  // display: flex;
+  // flex-direction: column;
+  // align-items: center;
+  // justify-content:  center;
+  // align-content: center;
 }
