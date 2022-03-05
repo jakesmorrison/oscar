@@ -194,8 +194,19 @@ footer{
   color: white;
 }
 ::ng-deep .nav-pills .nav-link.active, .nav-pills .show > .nav-link{
-  color: #000;
-  background-color: #fff;
+  // color: #000;
+  // background-color: #fff;
+  font-family: futura book legacy,FuturaPT-Book,Futura,Trebuchet MS,Arial,sans-serif;
+  background: transparent;
+  padding: 10px;
+  border: 2px solid #FFF;
+  color: #fff;
+  width: 120px;
+  margin-top: 10px;
+  cursor: pointer;
+  border-radius: 20px;
+  width: 130px;
+  text-align: center;
 }
 
 ::ng-deep a:hover {
