@@ -3,19 +3,20 @@
     width: 100%; 
     overflow-y: hidden;
     padding: 0;
+    max-width: 100%;
 }
-.scroll-row{
-    min-height: 100vh;
-    background-color: black;
-    color: white;
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-    justify-content:  center;
-    align-content: center;
-    // overflow-y: scroll;
-    // margin-bottom: 50px;
-}
+// .scroll-row{
+//     min-height: 100vh;
+//     background-color: black;
+//     color: white;
+//     display: flex;
+//     flex-direction: column;
+//     align-items: center;
+//     justify-content:  center;
+//     align-content: center;
+//     // overflow-y: scroll;
+//     // margin-bottom: 50px;
+// }
 .title {
     color: white;
     margin-top: 0;
@@ -23,7 +24,7 @@
     margin-top: 0px;
     text-align: center;
     white-space: nowrap;
-    font-size: 5.5vw;
+    // font-size: 5.5vw;
     padding: 5px;
 }
 footer{
@@ -195,6 +196,10 @@ footer{
 ::ng-deep .nav-pills .nav-link.active, .nav-pills .show > .nav-link{
   color: #000;
   background-color: #fff;
+}
+
+::ng-deep a:hover {
+  color: #c79f27;
 }
 
 .scroll-div{
