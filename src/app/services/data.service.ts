@@ -4,8 +4,8 @@ import { ActivatedRoute, Router } from '@angular/router';
 
 @Injectable({ providedIn: 'root' })
 export class DataService {
-    baseUrl = 'http://localhost:5000/'
-    // baseUrl = 'http://137.184.112.158:5000/'
+    // baseUrl = 'http://localhost:5000/'
+    baseUrl = 'http://137.184.112.158:5000/'
     user: any;
     userSelections: any = [];
     oscarOptions: any = [];
