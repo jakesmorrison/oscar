@@ -17,6 +17,7 @@ interface ITab {
     styleUrls: ['./main.component.scss']
 })
 export class MainComponent implements OnInit, AfterViewInit {
+    loading = true;
     loadCount = 0;
     name: any;
     currentIndex = 0;
@@ -89,10 +90,12 @@ export class MainComponent implements OnInit, AfterViewInit {
     }
 
     async getData() {
+        this.loading = true;
         this.loadCount++;
 
         const allPromises = [this.getOscarOptions(), this.getUserSelections(), this.getWinners(), this.getLeaderboard()];
         const res = await Promise.all(allPromises)
+        this.loading=false
 
         // Oscar Options
         this.dataService.oscarOptions = res[0];
@@ -111,6 +114,8 @@ export class MainComponent implements OnInit, AfterViewInit {
             if (this.userPicks.length == 0) this.tabs = this.tabs1;
             else this.tabs = this.tabs2;
         }
+        this.calcHeight();
+        this.cdref.detectChanges();
     }
 
     getOscarOptions() {

@@ -1,4 +1,4 @@
-<div class="container" style="overflow-y: hidden;">
+<div *ngIf="loading==false" class="container" style="overflow-y: hidden;">
 
     <tabset #staticTabs type="pills" style="margin-top: 10px; overflow-y: hidden;">
 
@@ -149,8 +149,6 @@
                 </div>
             </ng-container>
 
-
-
         </tab>
 
 
@@ -238,4 +236,8 @@
         <button class="refresh-btn" style="width: 100%;">Refresh Data</button>
     </footer> -->
 
+</div>
+
+<div class="loading-div" *ngIf="loading==true">
+    <div class="lds-ripple"><div></div><div></div></div>
 </div>
