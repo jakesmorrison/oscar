@@ -1,5 +1,5 @@
-import { Component, OnInit, ViewChild, ElementRef, AfterViewInit, ChangeDetectorRef  } from '@angular/core';
-import { BehaviorSubject, Subject} from 'rxjs';
+import { Component, OnInit, ViewChild, ElementRef, AfterViewInit, ChangeDetectorRef } from '@angular/core';
+import { BehaviorSubject, Subject } from 'rxjs';
 import { DataService } from '../../services/data.service'
 import { lastValueFrom } from 'rxjs';
 import { TabsetComponent } from 'ngx-bootstrap/tabs';
@@ -9,7 +9,7 @@ import { TabsetComponent } from 'ngx-bootstrap/tabs';
 interface ITab {
     title: string;
     active: boolean;
-  }
+}
 
 @Component({
     selector: 'lib-main',
@@ -31,19 +31,19 @@ export class MainComponent implements OnInit, AfterViewInit {
     leaderboard: any = [];
     tabs: ITab[] = []
     tabs1: ITab[] = [
-        { title: 'Selection', active: true},
-        { title: 'Leaderboard', active: false},
-        { title: 'Winners', active: false}
+        { title: 'Selection', active: true },
+        { title: 'Leaderboard', active: false },
+        { title: 'Winners', active: false }
     ];
     tabs2: ITab[] = [
-        { title: 'Picks', active: true},
-        { title: 'Leaderboard', active: false},
-        { title: 'Winners', active: false}
+        { title: 'Picks', active: true },
+        { title: 'Leaderboard', active: false },
+        { title: 'Winners', active: false }
     ];
     constructor(
-        private elementRef:ElementRef,
+        private elementRef: ElementRef,
         public dataService: DataService,
-        private cdref: ChangeDetectorRef 
+        private cdref: ChangeDetectorRef
     ) {
     }
     ngOnInit() {
@@ -76,10 +76,10 @@ export class MainComponent implements OnInit, AfterViewInit {
         let allElements = 0;
         if (this.selectionEnabled == true) {
             allElements = element1[0].clientHeight + element2[0].clientHeight + element3[0].clientHeight;
-            this.height.next(window.innerHeight- allElements - navPadding - footing);
+            this.height.next(window.innerHeight - allElements - navPadding - footing);
         } else {
             allElements = element1[0].clientHeight;
-            this.height.next(window.innerHeight- allElements - navPadding - footing);
+            this.height.next(window.innerHeight - allElements - navPadding - footing);
         }
     }
 
@@ -96,7 +96,7 @@ export class MainComponent implements OnInit, AfterViewInit {
 
         // Oscar Options
         this.dataService.oscarOptions = res[0];
-        this.dataService.oscarCats = [...new Set( this.dataService.oscarOptions.map( (item: any) => item['Cat']))].sort()//.slice(0,5);
+        this.dataService.oscarCats = [...new Set(this.dataService.oscarOptions.map((item: any) => item['Cat']))].sort().slice(0, 5);
 
         // Get User 
         this.userPicks = res[1];
@@ -107,17 +107,15 @@ export class MainComponent implements OnInit, AfterViewInit {
         // Get Winners 
         this.leaderboard = res[3];
 
-        console.log(this.winners)
-
         if (this.loadCount == 1) {
-            if (this.userPicks.length==0) this.tabs = this.tabs1;
+            if (this.userPicks.length == 0) this.tabs = this.tabs1;
             else this.tabs = this.tabs2;
         }
     }
 
     getOscarOptions() {
         this.userSelectionsWinner = {};
-        this.userSelectionsFavorite = {};    
+        this.userSelectionsFavorite = {};
         const url = `${this.dataService.baseUrl}api/getCurrentOscarOptions`;
         const params = {}
         return lastValueFrom(this.dataService.get(url, params))
@@ -125,7 +123,7 @@ export class MainComponent implements OnInit, AfterViewInit {
 
     getUserSelections() {
         const url = `${this.dataService.baseUrl}api/getCurrentUserSelections`;
-        const params = {'user': this.dataService.user};
+        const params = { 'user': this.dataService.user };
         return lastValueFrom(this.dataService.get(url, params))
         // ( (d2: any) => {
         //     this.dataService.userSelections = d2;
@@ -155,17 +153,21 @@ export class MainComponent implements OnInit, AfterViewInit {
             this.userSelectionsFavorite[key] = v.replace('$$FAV$$', '')
         }
         const url = `${this.dataService.baseUrl}api/setCurrentUserSelections`;
-        const body = {'user': this.dataService.user, 'win': this.userSelectionsWinner, 'fav': this.userSelectionsFavorite};
-        this.dataService.post(url, body).subscribe( (d2: any) => {
+        const body = { 'user': this.dataService.user, 'win': this.userSelectionsWinner, 'fav': this.userSelectionsFavorite };
+        this.dataService.post(url, body).subscribe((d2: any) => {
+            alert('Data Has Been Submitted');
+            this.getData();
         })
     }
 
-    radioChange(cat: any) {
+    radioChange(cat: any, i: number) {
         this.userSelectionsWinner = JSON.parse(JSON.stringify(this.userSelectionsWinner));
         this.userSelectionsFavorite = JSON.parse(JSON.stringify(this.userSelectionsFavorite));
-        if (this.userSelectionsWinner.hasOwnProperty(cat) && this.userSelectionsWinner[cat] != null && 
+        if (this.userSelectionsWinner.hasOwnProperty(cat) && this.userSelectionsWinner[cat] != null &&
             this.userSelectionsFavorite.hasOwnProperty(cat) && this.userSelectionsFavorite[cat] != null) {
-                setTimeout(() => {this.currentIndex = this.currentIndex + 1},300)
+            if (i < this.dataService.oscarCats.length - 1) {
+                setTimeout(() => { this.currentIndex = this.currentIndex + 1 }, 300)
+            }
         }
     }
 

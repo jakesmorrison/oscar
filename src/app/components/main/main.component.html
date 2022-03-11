@@ -46,14 +46,14 @@
                                                             value="{{ row['Name'] }}$$WIN$$"
                                                             name="{{ row['Cat'] }}$$WIN$$"
                                                             [(ngModel)]='userSelectionsWinner[cat]'
-                                                            (ngModelChange)="radioChange(cat)">
+                                                            (ngModelChange)="radioChange(cat, i)">
                                                     </td>
                                                     <td>
                                                         <input type="radio" class="option-input radio"
                                                             value="{{ row['Name'] }}$$FAV$$"
                                                             name="{{ row['Cat'] }$$FAV$$"
                                                             [(ngModel)]='userSelectionsFavorite[cat]'
-                                                            (ngModelChange)="radioChange(cat)">
+                                                            (ngModelChange)="radioChange(cat, i)">
                                                     </td>
                                                 </tr>
 
@@ -137,7 +137,7 @@
                             </tr>
                         </thead>
                         <tbody>
-                            <ng-container *ngFor="let row of winners;">
+                            <ng-container *ngFor="let row of leaderboard;">
                                 <tr style="border-bottom: 1px solid white;">
                                     <td>{{ row['User'] }}</td>
                                     <td>{{ row['Correct Answers'] }}</td>
