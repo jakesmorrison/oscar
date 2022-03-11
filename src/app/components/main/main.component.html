@@ -126,6 +126,30 @@
                 </div>
             </ng-container>
 
+            <ng-container *ngIf="tabz.title == 'Leaderboard'">
+                <div style="overflow-y: auto;" [ngStyle]="{'height.px': height | async}">
+                    <table class="picks-table">
+                        <thead>
+                            <tr>
+                                <th>User</th>
+                                <th>Correct Answers</th>
+                                <th>Total Points</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <ng-container *ngFor="let row of winners;">
+                                <tr style="border-bottom: 1px solid white;">
+                                    <td>{{ row['User'] }}</td>
+                                    <td>{{ row['Correct Answers'] }}</td>
+                                    <td>{{ row['Total Points'] }}</td>
+                                </tr>
+                            </ng-container>
+                        </tbody>
+                    </table>    
+                </div>
+            </ng-container>
+
+
 
         </tab>
 

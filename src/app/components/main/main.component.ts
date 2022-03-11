@@ -28,6 +28,7 @@ export class MainComponent implements OnInit, AfterViewInit {
     height: Subject<number> = new BehaviorSubject<number>(0)
     userPicks: any = [];
     winners: any = [];
+    leaderboard: any = [];
     tabs: ITab[] = []
     tabs1: ITab[] = [
         { title: 'Selection', active: true},
@@ -90,18 +91,21 @@ export class MainComponent implements OnInit, AfterViewInit {
     async getData() {
         this.loadCount++;
 
-        const allPromises = [this.getOscarOptions(), this.getUserSelections(), this.getWinners()];
+        const allPromises = [this.getOscarOptions(), this.getUserSelections(), this.getWinners(), this.getLeaderboard()];
         const res = await Promise.all(allPromises)
 
         // Oscar Options
         this.dataService.oscarOptions = res[0];
-        this.dataService.oscarCats = [...new Set( this.dataService.oscarOptions.map( (item: any) => item['Cat']))].sort().slice(0,5);
+        this.dataService.oscarCats = [...new Set( this.dataService.oscarOptions.map( (item: any) => item['Cat']))].sort()//.slice(0,5);
 
         // Get User 
         this.userPicks = res[1];
 
         // Get Winners 
         this.winners = res[2];
+
+        // Get Winners 
+        this.leaderboard = res[3];
 
         console.log(this.winners)
 
@@ -130,6 +134,12 @@ export class MainComponent implements OnInit, AfterViewInit {
 
     getWinners() {
         const url = `${this.dataService.baseUrl}api/getWinners`;
+        const params = {};
+        return lastValueFrom(this.dataService.get(url, params))
+    }
+
+    getLeaderboard() {
+        const url = `${this.dataService.baseUrl}api/getLeaderboard`;
         const params = {};
         return lastValueFrom(this.dataService.get(url, params))
     }
