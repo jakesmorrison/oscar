@@ -1,84 +1,139 @@
 <div class="container" style="overflow-y: hidden;">
 
-    <tabset type="pills" style="margin-top: 10px; overflow-y: hidden;" >
-        <tab heading="Selection" id="tab1" style="overflow-y: hidden;">
+    <tabset #staticTabs type="pills" style="margin-top: 10px; overflow-y: hidden;">
 
-            <div class="tab-cont" style="overflow-y: hidden;">
-                <div [ngStyle]="{'height.px': height | async}" class="heading-div" *ngIf="selectionEnabled==false" >
-                    <h1 class="title">Make Your Oscar Picks</h1>
-                    <button class="index-btn" (click)="selectionClick()">Lets Go!</button>
-                </div>
-    
-                <div *ngIf="selectionEnabled==true" class="selection-container" style="overflow-y: hidden;">
-    
-                    <ng-container *ngFor="let cat of dataService.oscarCats; index as i">
-                        <div class="picks" *ngIf="currentIndex == i" style="overflow-y: hidden;">
-                            <div class="title-div">
-                                <h3 class="title" style="white-space: nowrap;">{{cat}} <span
-                                    style="font-size: 12px;">({{i+1}}/{{dataService.oscarCats.length}})</span></h3>
-                            </div>
-                          
-                            <div class="scroll-div" [ngStyle]="{'height.px': height | async}">
-                                <table class="oscar-table">
-                                    <thead>
-                                        <tr>
-                                            <th>Name</th>
-                                            <th>Winner</th>
-                                            <th>Favorite</th>
-                                        </tr>
-                                    </thead>
-                                    <tbody>
-                                        <ng-container *ngFor="let row of dataService.oscarOptions;">
-                                            <tr *ngIf="row['Cat'] == cat">
-                                                <td>{{ row['Name'] }}</td>
-                                                <td>
-                                                    <input type="radio" class="option-input radio"
-                                                        value="{{ row['Name'] }}$$WIN$$" name="{{ row['Cat'] }}$$WIN$$"
-                                                        [(ngModel)]='userSelectionsWinner[cat]'
-                                                        (ngModelChange)="radioChange()">
-                                                </td>
-                                                <td>
-                                                    <input type="radio" class="option-input radio"
-                                                        value="{{ row['Name'] }}$$FAV$$" name="{{ row['Cat'] }$$FAV$$"
-                                                        [(ngModel)]='userSelectionsFavorite[cat]'
-                                                        (ngModelChange)="radioChange()">
-                                                </td>
+
+        <tab 
+        *ngFor="let tabz of tabs" 
+        [heading]="tabz.title" [active]=
+        "tabz.active" 
+        (selectTab)="tabz.active = true" 
+        (deselect)="tabz.active = false">
+
+            <ng-container *ngIf="tabz.title == 'Selection'">
+
+                <div class="tab-cont" style="overflow-y: hidden;">
+                    <div [ngStyle]="{'height.px': height | async}" class="heading-div" *ngIf="selectionEnabled==false">
+                        <h1 class="title">Make Your Oscar Picks</h1>
+                        <button class="index-btn" (click)="selectionClick()">Lets Go!</button>
+                    </div>
+
+                    <div *ngIf="selectionEnabled==true" class="selection-container" style="overflow-y: hidden;">
+
+                        <ng-container *ngFor="let cat of dataService.oscarCats; index as i">
+                            <div class="picks" *ngIf="currentIndex == i" style="overflow-y: hidden;">
+                                <div class="title-div">
+                                    <h3 class="title" style="white-space: nowrap;">{{cat}} <span
+                                            style="font-size: 12px;">({{i+1}}/{{dataService.oscarCats.length}})</span>
+                                    </h3>
+                                </div>
+
+                                <div class="scroll-div" [ngStyle]="{'height.px': height | async}">
+                                    <table class="oscar-table">
+                                        <thead>
+                                            <tr>
+                                                <th>Name</th>
+                                                <th>Winner</th>
+                                                <th>Favorite</th>
                                             </tr>
-    
-                                        </ng-container>
-                                    </tbody>
-                                </table>
+                                        </thead>
+                                        <tbody>
+                                            <ng-container *ngFor="let row of dataService.oscarOptions;">
+                                                <tr *ngIf="row['Cat'] == cat">
+                                                    <td>{{ row['Name'] }}</td>
+                                                    <td>
+                                                        <input type="radio" class="option-input radio"
+                                                            value="{{ row['Name'] }}$$WIN$$"
+                                                            name="{{ row['Cat'] }}$$WIN$$"
+                                                            [(ngModel)]='userSelectionsWinner[cat]'
+                                                            (ngModelChange)="radioChange(cat)">
+                                                    </td>
+                                                    <td>
+                                                        <input type="radio" class="option-input radio"
+                                                            value="{{ row['Name'] }}$$FAV$$"
+                                                            name="{{ row['Cat'] }$$FAV$$"
+                                                            [(ngModel)]='userSelectionsFavorite[cat]'
+                                                            (ngModelChange)="radioChange(cat)">
+                                                    </td>
+                                                </tr>
+
+                                            </ng-container>
+                                        </tbody>
+                                    </table>
+                                </div>
                             </div>
-                        </div>
-                    </ng-container>
+                        </ng-container>
+                    </div>
+
+                    <div *ngIf="selectionEnabled==true" class="button-div"
+                        style="width: 100%; display: flex;flex-direction: row;justify-content: space-between; margin-top: 10px;">
+                        <button style="margin-left: 10px;" [disabled]="!(currentIndex>=1)" class="index-btn"
+                            (click)="currentIndex = currentIndex - 1">Previous</button>
+                        <button
+                            *ngIf="((userSelectionsFavorite | objectLength) == dataService.oscarCats.length) && ((userSelectionsWinner | objectLength) == dataService.oscarCats.length)"
+                            style="text-align: center;" class="index-btn" (click)="postSelections()">Submit</button>
+                        <button style="margin-right: 10px;" [disabled]="!(currentIndex<dataService.oscarCats.length-1)"
+                            class="index-btn" (click)="currentIndex = currentIndex + 1">Next</button>
+                    </div>
+
                 </div>
 
-                <div *ngIf="selectionEnabled==true" class="button-div"
-                style="width: 100%; display: flex;flex-direction: row;justify-content: space-between; margin-top: 10px;">
-                <button style="margin-left: 10px;" [disabled]="!(currentIndex>=1)" class="index-btn"
-                    (click)="currentIndex = currentIndex - 1">Previous</button>
-                <button
-                    *ngIf="((userSelectionsFavorite | objectLength) == dataService.oscarCats.length) && ((userSelectionsWinner | objectLength) == dataService.oscarCats.length)"
-                    style="text-align: center;" class="index-btn"
-                    (click)="submitSelections()">Submit</button>
-                <button style="margin-right: 10px;"
-                    [disabled]="!(currentIndex<dataService.oscarCats.length-1)" class="index-btn"
-                    (click)="currentIndex = currentIndex + 1">Next</button>
-            </div>
+            </ng-container>
 
-            </div>
+            <ng-container *ngIf="tabz.title == 'Picks'">
+                <div style="overflow-y: auto;" [ngStyle]="{'height.px': height | async}">
+                    <table class="picks-table">
+                        <thead>
+                            <tr>
+                                <th>Category</th>
+                                <th>Winner</th>
+                                <th>Favorite</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <ng-container *ngFor="let row of userPicks;">
+                                <tr style="border-bottom: 1px solid white;">
+                                    <td>{{ row['Cat'] }}</td>
+                                    <td>{{ row['Won'] }}</td>
+                                    <td>{{ row['Favorite'] }}</td>
+                                </tr>
+                            </ng-container>
+                        </tbody>
+                    </table>    
+                </div>
+            </ng-container>
+
+            <ng-container *ngIf="tabz.title == 'Winners'">
+                <div style="overflow-y: auto;" [ngStyle]="{'height.px': height | async}">
+                    <table class="picks-table">
+                        <thead>
+                            <tr>
+                                <th>Category</th>
+                                <th>Name</th>
+                                <th>Weight</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <ng-container *ngFor="let row of winners;">
+                                <tr style="border-bottom: 1px solid white;">
+                                    <td>{{ row['Cat'] }}</td>
+                                    <td>{{ row['Name'] }}</td>
+                                    <td>{{ row['Weight'] }}</td>
+                                </tr>
+                            </ng-container>
+                        </tbody>
+                    </table>    
+                </div>
+            </ng-container>
+
 
         </tab>
-        <tab heading="Picks">Basic content 1</tab>
-        <tab heading="Leaderboard">Basic content 2</tab>
-        <tab heading="Winners">Basic content 2</tab>
 
 
-        
     </tabset>
 
     <footer>
-        <button class="refresh-btn" style="width: 100%;">Refresh Data</button>
+        <button class="refresh-btn" style="width: 100%;" (click)="refreshData()">Refresh Data</button>
     </footer>
 
 

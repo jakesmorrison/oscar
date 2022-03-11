@@ -17,16 +17,6 @@
 //     // overflow-y: scroll;
 //     // margin-bottom: 50px;
 // }
-.title {
-    color: white;
-    margin-top: 0;
-    margin-bottom: 0px;
-    margin-top: 0px;
-    text-align: center;
-    
-    // font-size: 5.5vw;
-    padding: 5px;
-}
 footer{
     position:fixed;
     bottom:0px;
@@ -64,6 +54,35 @@ footer{
     margin-top: 10px;
     cursor: pointer;
     border-radius: 20px;
+}
+
+.picks-table {
+  display: block;
+  font-family: sans-serif;
+  -webkit-font-smoothing: antialiased;
+  font-size: 100%;
+  overflow: auto;
+  width: auto;
+  background-color: white;
+  overflow: hidden;
+  width: 90%;
+  margin-left: 5%;
+  
+  th {
+      background-color: black;
+      color: white;
+      font-weight: 600;
+      padding: 10px 10px;
+      text-align: center;
+      font-size: 110%;
+  }
+  td {
+    background-color: black;
+    color: white;
+    padding: 5px 10px;
+    text-align: center;
+    font-size: 12px;
+  }
 }
 
 .oscar-table {
@@ -160,10 +179,10 @@ footer{
       position: relative;
     }
     100% {
-      height: 200px;
-      width: 200px;
-      margin-left: -80px;
-      margin-top: -80px;
+      height: 50px;
+      width: 50px;
+      margin-left: -12px;
+      margin-top: -12px;
       opacity: 0;
     }
   }
@@ -189,6 +208,9 @@ footer{
 }
 ::ng-deep .nav-pills {
   padding: 20px;
+  padding-bottom: 15px;
+  border-bottom: 8px solid #c79f27;
+  margin-bottom: 10px;
 }
 ::ng-deep .nav-link{
   color: white;
@@ -225,4 +247,44 @@ footer{
   // align-items: center;
   // justify-content:  center;
   // align-content: center;
+}
+
+
+@media (min-width:769px) {
+  .title {
+    color: white;
+    margin-top: 0;
+    margin-bottom: 0px;
+    margin-top: 0px;
+    text-align: center;
+    font-size: 1vw;
+    padding: 5px;
+  }
+  .container{
+    width: 600px;
+  }
+  footer {
+    width: 600px;
+  }
+  // .button-div{
+  //   display: flex;
+  //   flex-direction: row;
+  //   justify-content: space-between;
+  //   margin-top: 10px;
+  //   position: fixed;
+  //   bottom: 60px;
+  //   width: 600px;
+  // }
+
+}
+@media (max-width: 768px) {
+  .title {
+    color: white;
+    margin-top: 0;
+    margin-bottom: 0px;
+    margin-top: 0px;
+    text-align: center;
+    font-size: 5vw;
+    padding: 5px;
+  }
 }

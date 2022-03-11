@@ -23,4 +23,9 @@ export class DataService {
     get(url: any, params: any) {
         return this.httpClient.get(url, {params})
     }
+
+    post(url: any, body: any) {
+        return this.httpClient.post(url, body)
+    }
+
 }

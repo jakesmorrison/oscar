@@ -1,9 +1,15 @@
 import { Component, OnInit, ViewChild, ElementRef, AfterViewInit, ChangeDetectorRef  } from '@angular/core';
 import { BehaviorSubject, Subject} from 'rxjs';
 import { DataService } from '../../services/data.service'
+import { lastValueFrom } from 'rxjs';
+import { TabsetComponent } from 'ngx-bootstrap/tabs';
 // declare let $: any; 
 // import { faCoffee } from '@fortawesome/free-solid-svg-icons';
 
+interface ITab {
+    title: string;
+    active: boolean;
+  }
 
 @Component({
     selector: 'lib-main',
@@ -11,8 +17,7 @@ import { DataService } from '../../services/data.service'
     styleUrls: ['./main.component.scss']
 })
 export class MainComponent implements OnInit, AfterViewInit {
-    // @ViewChild('mainScreen', {read: ElementRef}) elementView: ElementRef;
-    
+    loadCount = 0;
     name: any;
     currentIndex = 0;
     currentPosition = window.pageYOffset;
@@ -21,7 +26,19 @@ export class MainComponent implements OnInit, AfterViewInit {
     userSelectionsFavorite: any = {};
     selectionEnabled = false;
     height: Subject<number> = new BehaviorSubject<number>(0)
-
+    userPicks: any = [];
+    winners: any = [];
+    tabs: ITab[] = []
+    tabs1: ITab[] = [
+        { title: 'Selection', active: true},
+        { title: 'Leaderboard', active: false},
+        { title: 'Winners', active: false}
+    ];
+    tabs2: ITab[] = [
+        { title: 'Picks', active: true},
+        { title: 'Leaderboard', active: false},
+        { title: 'Winners', active: false}
+    ];
     constructor(
         private elementRef:ElementRef,
         public dataService: DataService,
@@ -51,17 +68,14 @@ export class MainComponent implements OnInit, AfterViewInit {
         this.cdref.detectChanges();
         const dom: HTMLElement = this.elementRef.nativeElement;
         const element1 = dom.querySelectorAll('.nav-pills'); // nav
-        const navPadding = 40; // padding
+        const navPadding = 50; // padding
         const element2 = dom.querySelectorAll('.title-div');
         const element3 = dom.querySelectorAll('.button-div');
         const footing = 50
-        console.log(this.selectionEnabled)
         let allElements = 0;
         if (this.selectionEnabled == true) {
-            console.log(element3[0].clientHeight)
             allElements = element1[0].clientHeight + element2[0].clientHeight + element3[0].clientHeight;
             this.height.next(window.innerHeight- allElements - navPadding - footing);
-
         } else {
             allElements = element1[0].clientHeight;
             this.height.next(window.innerHeight- allElements - navPadding - footing);
@@ -73,23 +87,55 @@ export class MainComponent implements OnInit, AfterViewInit {
         this.calcHeight();
     }
 
-    getData() {
+    async getData() {
+        this.loadCount++;
+
+        const allPromises = [this.getOscarOptions(), this.getUserSelections(), this.getWinners()];
+        const res = await Promise.all(allPromises)
+
+        // Oscar Options
+        this.dataService.oscarOptions = res[0];
+        this.dataService.oscarCats = [...new Set( this.dataService.oscarOptions.map( (item: any) => item['Cat']))].sort().slice(0,5);
+
+        // Get User 
+        this.userPicks = res[1];
+
+        // Get Winners 
+        this.winners = res[2];
+
+        console.log(this.winners)
+
+        if (this.loadCount == 1) {
+            if (this.userPicks.length==0) this.tabs = this.tabs1;
+            else this.tabs = this.tabs2;
+        }
+    }
+
+    getOscarOptions() {
         this.userSelectionsWinner = {};
         this.userSelectionsFavorite = {};    
         const url = `${this.dataService.baseUrl}api/getCurrentOscarOptions`;
         const params = {}
-        this.dataService.get(url, params).subscribe( (d1: any) => {
-            this.dataService.oscarOptions = d1;
-            this.dataService.oscarCats = [...new Set( d1.map( (item: any) => item['Cat']))].sort();
-            const url = `${this.dataService.baseUrl}api/getCurrentUserSelections`;
-            const params = {'user': this.dataService.user};
-            this.dataService.get(url, params).subscribe( (d2: any) => {
-                this.dataService.userSelections = d2;
-            })
-        });
+        return lastValueFrom(this.dataService.get(url, params))
     }
 
-    submitSelections() {
+    getUserSelections() {
+        const url = `${this.dataService.baseUrl}api/getCurrentUserSelections`;
+        const params = {'user': this.dataService.user};
+        return lastValueFrom(this.dataService.get(url, params))
+        // ( (d2: any) => {
+        //     this.dataService.userSelections = d2;
+        // })
+    }
+
+    getWinners() {
+        const url = `${this.dataService.baseUrl}api/getWinners`;
+        const params = {};
+        return lastValueFrom(this.dataService.get(url, params))
+    }
+
+
+    postSelections() {
         for (const [key, value] of Object.entries(this.userSelectionsWinner)) {
             let v: any = value;
             this.userSelectionsWinner[key] = v.replace('$$WIN$$', '')
@@ -98,16 +144,26 @@ export class MainComponent implements OnInit, AfterViewInit {
             let v: any = value;
             this.userSelectionsFavorite[key] = v.replace('$$FAV$$', '')
         }
-        console.log(this.userSelectionsWinner)
-        console.log(this.userSelectionsFavorite)
+        const url = `${this.dataService.baseUrl}api/setCurrentUserSelections`;
+        const body = {'user': this.dataService.user, 'win': this.userSelectionsWinner, 'fav': this.userSelectionsFavorite};
+        this.dataService.post(url, body).subscribe( (d2: any) => {
+        })
     }
 
-    radioChange() {
-        this.userSelectionsWinner = JSON.parse(JSON.stringify(this.userSelectionsWinner))
-        this.userSelectionsFavorite = JSON.parse(JSON.stringify(this.userSelectionsFavorite))
+    radioChange(cat: any) {
+        this.userSelectionsWinner = JSON.parse(JSON.stringify(this.userSelectionsWinner));
+        this.userSelectionsFavorite = JSON.parse(JSON.stringify(this.userSelectionsFavorite));
+        if (this.userSelectionsWinner.hasOwnProperty(cat) && this.userSelectionsWinner[cat] != null && 
+            this.userSelectionsFavorite.hasOwnProperty(cat) && this.userSelectionsFavorite[cat] != null) {
+                setTimeout(() => {this.currentIndex = this.currentIndex + 1},300)
+        }
     }
 
     changeIndex(val: any) {
+    }
+
+    refreshData() {
+        this.getData()
     }
 
 }
