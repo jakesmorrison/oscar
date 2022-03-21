@@ -98,28 +98,31 @@ export class MainComponent implements OnInit, AfterViewInit {
         const res = await Promise.all(allPromises)
         this.loading=false
 
-        // Oscar Options
-        this.dataService.oscarOptions = res[0];
-        this.dataService.oscarCats = [...new Set(this.dataService.oscarOptions.map((item: any) => item['Cat']))].sort()//.slice(0, 5);
+        if (res.length == 5) {
+            // Oscar Options
+            this.dataService.oscarOptions = res[0];
+            this.dataService.oscarCats = [...new Set(this.dataService.oscarOptions.map((item: any) => item['Cat']))].sort()//.slice(0, 5);
 
-        // Get User 
-        this.userPicks = res[1];
+            // Get User 
+            this.userPicks = res[1];
 
-        // Get Winners 
-        this.winners = res[2];
+            // Get Winners 
+            this.winners = res[2];
 
-        // Get Winners 
-        this.leaderboard = res[3];
+            // Get Winners 
+            this.leaderboard = res[3];
 
-        // Get Favorite
-        this.favorite = res[4];
+            // Get Favorite
+            this.favorite = res[4];
 
 
-        if (this.userPicks.length == 0) this.tabs = this.tabs1;
-        else this.tabs = this.tabs2;
+            if (this.userPicks.length == 0) this.tabs = this.tabs1;
+            else this.tabs = this.tabs2;
 
-        this.calcHeight();
-        this.cdref.detectChanges();
+            this.calcHeight();
+            this.cdref.detectChanges();
+        }
+
     }
 
     getOscarOptions() {
