@@ -1,5 +1,7 @@
 <div *ngIf="loading==false" class="container" style="overflow-y: hidden;">
 
+    <p style="font-size: 12px; position: absolute; top:0; right: 0; margin: 0; padding: 0; margin-right: 6px;color: #c79f27;">{{dataService.user}}</p>
+
     <tabset #staticTabs type="pills" style="margin-top: 10px; overflow-y: hidden;">
 
 
@@ -125,6 +127,30 @@
                     </table>    
                 </div>
             </ng-container>
+
+            <ng-container *ngIf="tabz.title == 'Favorites'">
+                <div style="overflow-y: auto;" [ngStyle]="{'height.px': height | async}">
+                    <table class="picks-table">
+                        <thead>
+                            <tr>
+                                <th>Category</th>
+                                <th>Name</th>
+                                <th>Votes</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <ng-container *ngFor="let row of favorite;">
+                                <tr style="border-bottom: 1px solid white;">
+                                    <td>{{ row['Category'] }}</td>
+                                    <td>{{ row['Name'] }}</td>
+                                    <td>{{ row['Votes'] }}</td>
+                                </tr>
+                            </ng-container>
+                        </tbody>
+                    </table>    
+                </div>
+            </ng-container>
+
 
             <ng-container *ngIf="tabz.title == 'Leaderboard'">
                 <div style="overflow-y: auto;" [ngStyle]="{'height.px': height | async}">

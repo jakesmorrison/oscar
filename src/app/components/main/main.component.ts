@@ -18,7 +18,6 @@ interface ITab {
 })
 export class MainComponent implements OnInit, AfterViewInit {
     loading = true;
-    loadCount = 0;
     name: any;
     currentIndex = 0;
     currentPosition = window.pageYOffset;
@@ -29,17 +28,20 @@ export class MainComponent implements OnInit, AfterViewInit {
     height: Subject<number> = new BehaviorSubject<number>(0)
     userPicks: any = [];
     winners: any = [];
+    favorite: any = [];
     leaderboard: any = [];
     tabs: ITab[] = []
     tabs1: ITab[] = [
         { title: 'Selection', active: true },
         { title: 'Leaderboard', active: false },
-        { title: 'Winners', active: false }
+        { title: 'Winners', active: false },
+        { title: 'Favorite', active: false }
     ];
     tabs2: ITab[] = [
         { title: 'Picks', active: true },
         { title: 'Leaderboard', active: false },
-        { title: 'Winners', active: false }
+        { title: 'Winners', active: false },
+        { title: 'Favorite', active: false }
     ];
     constructor(
         private elementRef: ElementRef,
@@ -91,15 +93,14 @@ export class MainComponent implements OnInit, AfterViewInit {
 
     async getData() {
         this.loading = true;
-        this.loadCount++;
 
-        const allPromises = [this.getOscarOptions(), this.getUserSelections(), this.getWinners(), this.getLeaderboard()];
+        const allPromises = [this.getOscarOptions(), this.getUserSelections(), this.getWinners(), this.getLeaderboard(), this.getFavorite()];
         const res = await Promise.all(allPromises)
         this.loading=false
 
         // Oscar Options
         this.dataService.oscarOptions = res[0];
-        this.dataService.oscarCats = [...new Set(this.dataService.oscarOptions.map((item: any) => item['Cat']))].sort().slice(0, 5);
+        this.dataService.oscarCats = [...new Set(this.dataService.oscarOptions.map((item: any) => item['Cat']))].sort()//.slice(0, 5);
 
         // Get User 
         this.userPicks = res[1];
@@ -110,10 +111,13 @@ export class MainComponent implements OnInit, AfterViewInit {
         // Get Winners 
         this.leaderboard = res[3];
 
-        if (this.loadCount == 1) {
-            if (this.userPicks.length == 0) this.tabs = this.tabs1;
-            else this.tabs = this.tabs2;
-        }
+        // Get Favorite
+        this.favorite = res[4];
+
+
+        if (this.userPicks.length == 0) this.tabs = this.tabs1;
+        else this.tabs = this.tabs2;
+
         this.calcHeight();
         this.cdref.detectChanges();
     }
@@ -147,6 +151,12 @@ export class MainComponent implements OnInit, AfterViewInit {
         return lastValueFrom(this.dataService.get(url, params))
     }
 
+    getFavorite() {
+        const url = `${this.dataService.baseUrl}api/getFavorite`;
+        const params = {};
+        return lastValueFrom(this.dataService.get(url, params))
+    }
+
 
     postSelections() {
         for (const [key, value] of Object.entries(this.userSelectionsWinner)) {
@@ -162,6 +172,9 @@ export class MainComponent implements OnInit, AfterViewInit {
         this.dataService.post(url, body).subscribe((d2: any) => {
             alert('Data Has Been Submitted');
             this.getData();
+        }, (error) => {
+            console.log(error)
+            alert('Submission Error');
         })
     }
 
