@@ -35,13 +35,13 @@ export class MainComponent implements OnInit, AfterViewInit {
         { title: 'Selection', active: true },
         { title: 'Leaderboard', active: false },
         { title: 'Winners', active: false },
-        { title: 'Favorite', active: false }
+        { title: 'Favorites', active: false }
     ];
     tabs2: ITab[] = [
         { title: 'Picks', active: true },
         { title: 'Leaderboard', active: false },
         { title: 'Winners', active: false },
-        { title: 'Favorite', active: false }
+        { title: 'Favorites', active: false }
     ];
     constructor(
         private elementRef: ElementRef,
@@ -77,12 +77,16 @@ export class MainComponent implements OnInit, AfterViewInit {
         const element3 = dom.querySelectorAll('.button-div');
         const footing = 50
         let allElements = 0;
-        if (this.selectionEnabled == true) {
-            allElements = element1[0].clientHeight + element2[0].clientHeight + element3[0].clientHeight;
-            this.height.next(window.innerHeight - allElements - navPadding - footing);
-        } else {
-            allElements = element1[0].clientHeight;
-            this.height.next(window.innerHeight - allElements - navPadding - footing);
+        try {
+            if (this.selectionEnabled == true) {
+                allElements = element1[0].clientHeight + element2[0].clientHeight + element3[0].clientHeight;
+                this.height.next(window.innerHeight - allElements - navPadding - footing);
+            } else {
+                allElements = element1[0].clientHeight;
+                this.height.next(window.innerHeight - allElements - navPadding - footing);
+            }    
+        } catch (e) {
+            this.height.next(100)
         }
     }
 
@@ -113,6 +117,7 @@ export class MainComponent implements OnInit, AfterViewInit {
             this.leaderboard = res[3];
 
             // Get Favorite
+            console.log(res[4])
             this.favorite = res[4];
 
 
